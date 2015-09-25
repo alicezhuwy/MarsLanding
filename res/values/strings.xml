@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Mars Landing</string>
+    <string name="restart">Restart</string>
+    <string name="action_settings">Settings</string>
+	<string name="left">GoLeft</string>
+	<string name="up">GoUp</string>
+	<string name="right">Go</string>
+</resources>

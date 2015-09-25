@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:clickable="true"
+    android:orientation="vertical" >
+
+    <com.example.marslanding.GameLoop
+        android:id="@+id/gameLoop"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent" />
+
+    <RelativeLayout
+        android:id="@+id/buttonGroup"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <ImageButton
+            android:id="@+id/btnRestart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/start"
+            android:contentDescription="@string/restart" />
+
+         <ImageButton 
+            android:id="@+id/btnUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_alignParentBottom="true"
+            android:contentDescription="@string/up"
+            android:src="@drawable/uparrow" />
+
+          <ImageButton
+              android:id="@+id/btnLeft"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignParentBottom="true"
+              android:layout_toStartOf="@+id/btnUp"
+              android:contentDescription="@string/left"
+              android:src="@drawable/leftarrow" />
+
+          <ImageButton
+              android:id="@+id/btnRight"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignParentBottom="true"
+              android:layout_toEndOf="@+id/btnUp"
+              android:contentDescription="@string/right"
+              android:src="@drawable/rightarrow" />
+        
+    </RelativeLayout>
+
+</FrameLayout>
