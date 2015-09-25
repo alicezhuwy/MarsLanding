@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 public class MainActivity extends Activity implements OnClickListener {
     private GameLoop gameLoop;
     private ImageButton leftBtn, upBtn, rightBtn, restartBtn;
+
 	/**
 	 * @author John Casey 11/04/2014, modified by Alice Zhu 21/10/2015
 	 * Assignment of subject ISCG7424 Mobile Application Development
@@ -57,19 +58,17 @@ public class MainActivity extends Activity implements OnClickListener {
 				gameLoop.reset();
 				gameLoop.invalidate();
 			}
-			
+
 			if(view.getId() == R.id.btnLeft){
 				gameLoop.left();
-				
 			}
 			if(view.getId() == R.id.btnUp){
 				gameLoop.up();
 			}
 			if(view.getId() == R.id.btnRight){
 				gameLoop.right();
-			}
-			
+			} 
 		}
-   
+		
 
 }

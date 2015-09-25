@@ -33,9 +33,13 @@ public class GameLoop extends SurfaceView implements Runnable,
 	public static final double INITIAL_TIME = 3.5;
 	static final int REFRESH_RATE = 20;
 	static final int GRAVITY = 1;
-	boolean downPressed = false;
-	boolean leftPressed = false;
-	boolean rightPressed = false;
+	//set a flag to call out the flame of spaceship
+	int NOTHING =0;
+	int LEFT = 1;
+	int UP = 2;
+	int RIGHT = 3;
+	int DIRECTION;
+	//set flag to end game 
 	boolean gameover = false;
 	double t = INITIAL_TIME;
 	float x, y;
@@ -45,7 +49,7 @@ public class GameLoop extends SurfaceView implements Runnable,
 	Thread main;
 	Paint paint = new Paint();	
 	Canvas offscreen;
-	Bitmap buffer, flame, background;
+	Bitmap buffer, flame, background, terrain, mainflame;
 	Path path;
 	
 	
@@ -90,8 +94,7 @@ public class GameLoop extends SurfaceView implements Runnable,
 
 		for (int i = 0; i < xcor.length; i++) {
 			path.lineTo(xcor[i], ycor[i]);		
-		}
-		
+		}	
 		setOnTouchListener(this);
 		getHolder().addCallback(this);	
 	}
@@ -125,6 +128,9 @@ public class GameLoop extends SurfaceView implements Runnable,
 			SurfaceHolder holder = getHolder();
 			
 			synchronized (holder) {
+				
+				imageLOAD();
+				
 				//lock surface			
 				canvas = holder.lockCanvas();	
 				
@@ -144,37 +150,9 @@ public class GameLoop extends SurfaceView implements Runnable,
 			    paint.setColor(Color.LTGRAY);
 			    paint.setStyle(Paint.Style.FILL);
 			    canvas.drawPath(path, paint);
-			    			
-				// s = ut + 0.5 gt^2
-			    t = t + 0.01; // increment the parameter for synthetic time by a small amount
-
-				// not that the initial velocity (u) is zero so I have not put ut into the code below
-				 y = (int) y + (int) ((0.5 * (GRAVITY * t * t)));
-
-			
-				boolean bottomLeft = contains(xcor, ycor, x-35, y+60);
-				boolean bottomRight = contains(xcor, ycor, x+35, y+60);
+			    
+			    spaceState(canvas);
 				
-				if (bottomLeft || bottomRight)
-				{
-					if ((x>=245 && x<=303)||(x>=370 && x<=415)){
-						buffer = ((BitmapDrawable)getResources().getDrawable(R.drawable.spaceship)).getBitmap();  
-					    canvas.drawBitmap(buffer,x-45, y-53, null); 
-					}
-					
-					else{
-						buffer = ((BitmapDrawable)getResources().getDrawable(R.drawable.terrain)).getBitmap();  
-					    canvas.drawBitmap(buffer,x-50, y-44, null); 
-					}
-					t = INITIAL_TIME; // reset the time variable
-					
-					gameover = true;
-				}
-				else
-				{				
-					buffer = ((BitmapDrawable)getResources().getDrawable(R.drawable.spaceship)).getBitmap();  
-				    canvas.drawBitmap(buffer,x-45, y-53, null); 
-				}
 			}
 
 			try {
@@ -194,6 +172,63 @@ public class GameLoop extends SurfaceView implements Runnable,
 		}	
 	}
 	
+	private void spaceState(Canvas canvas) {
+		// TODO Auto-generated method stub
+		// s = ut + 0.5 gt^2
+	    t = t + 0.01; // increment the parameter for synthetic time by a small amount
+
+		// not that the initial velocity (u) is zero so I have not put ut into the code below
+		 y = (int) y + (int) ((0.5 * (GRAVITY * t * t)));
+
+	
+		boolean bottomLeft = contains(xcor, ycor, x-35, y+60);
+		boolean bottomRight = contains(xcor, ycor, x+35, y+60);
+		
+		if (bottomLeft || bottomRight)
+		{
+			if ((x>=245 && x<=303)||(x>=365 && x<=455))
+			{	  
+			    canvas.drawBitmap(buffer,x-45, y-53, null); 
+			}
+			
+			else{						
+			    canvas.drawBitmap(terrain,x-50, y, null); 
+			}
+			t = INITIAL_TIME; // reset the time variable
+			
+			gameover = true;
+		}			
+		else
+		{									  
+		    canvas.drawBitmap(buffer,x-45, y-53, null); 
+		    if (DIRECTION == LEFT )
+		    {						    	
+		    	canvas.drawBitmap(flame,x+27, y+57, null);
+		    	DIRECTION = NOTHING;
+		    }			    
+		    else if(DIRECTION == UP)
+		    {				    	
+		    	canvas.drawBitmap(mainflame,x-17, y+50, null);
+		    	DIRECTION = NOTHING;
+		    }
+		    else if (DIRECTION == RIGHT)
+		    {			    	    		
+	    		canvas.drawBitmap(flame,x-27, y+57, null);
+	    		DIRECTION = NOTHING;
+		    }
+		}
+	}
+
+	/**
+	 * @author Load all the bitmaps.
+	 */
+	private void imageLOAD() {
+		// TODO Auto-generated method stub
+		buffer = ((BitmapDrawable)getResources().getDrawable(R.drawable.spaceship)).getBitmap();
+		terrain = ((BitmapDrawable)getResources().getDrawable(R.drawable.terrain)).getBitmap();  
+		flame = ((BitmapDrawable)getResources().getDrawable(R.drawable.sideflame)).getBitmap();
+		mainflame = ((BitmapDrawable)getResources().getDrawable(R.drawable.mainflame)).getBitmap();
+	}
 
 	/**
 	 * @author Check if spaceship land on the flat surface.
@@ -258,9 +293,8 @@ public class GameLoop extends SurfaceView implements Runnable,
 		
 		x = event.getX();
 		y = event.getY();
-
 		t = 3;
-
+		DIRECTION = NOTHING;
 		gameover = false;
 
 		return true;
@@ -275,16 +309,21 @@ public class GameLoop extends SurfaceView implements Runnable,
 		
 		x = width /2;
 		y = 0;
-		t = 0;
+		t = 3;
+		DIRECTION = NOTHING;
 	}
 
+	
 	/**
 	 * @author Set left method to let spaceship turn left-up.
 	 */
 	public void left() {
 		// TODO Auto-generated method stub
+		wrapTerain();
 		x = x-15;
 		y = y-35;
+//		leftPressed = true;
+		DIRECTION = LEFT;
 	}
 
 	/**
@@ -292,15 +331,33 @@ public class GameLoop extends SurfaceView implements Runnable,
 	 */
 	public void up() {
 		// TODO Auto-generated method stub
-		y = y-35;
+		y = y-50;
+//		upPressed = true;
+		DIRECTION = UP; 
 	}
 
 	/**
 	 * @author Set left method to let spaceship turn right-up.
 	 */
 	public void right() {
+		
 		// TODO Auto-generated method stub
+		wrapTerain();
 		x = x+15;
 		y = y-35;
+//		rightPressed = true;
+		DIRECTION = RIGHT;
+	}
+	
+	private void wrapTerain() {
+		// TODO Auto-generated method stub
+		if(x < 90)
+		{
+			x = screenWidth;
+		}
+		else if(x > screenWidth)
+		{
+			x = 90;
+		}
 	}
 }

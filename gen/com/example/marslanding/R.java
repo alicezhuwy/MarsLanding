@@ -33,14 +33,15 @@ public final class R {
         public static final int landscape=0x7f020004;
         public static final int leftarrow=0x7f020005;
         public static final int main_flame=0x7f020006;
-        public static final int mars=0x7f020007;
-        public static final int rightarrow=0x7f020008;
-        public static final int sideflame=0x7f020009;
-        public static final int spaceship=0x7f02000a;
-        public static final int start=0x7f02000b;
-        public static final int terrain=0x7f02000c;
-        public static final int thruster=0x7f02000d;
-        public static final int uparrow=0x7f02000e;
+        public static final int mainflame=0x7f020007;
+        public static final int mars=0x7f020008;
+        public static final int rightarrow=0x7f020009;
+        public static final int sideflame=0x7f02000a;
+        public static final int spaceship=0x7f02000b;
+        public static final int start=0x7f02000c;
+        public static final int terrain=0x7f02000d;
+        public static final int thruster=0x7f02000e;
+        public static final int uparrow=0x7f02000f;
     }
     public static final class id {
         public static final int action_settings=0x7f090006;
