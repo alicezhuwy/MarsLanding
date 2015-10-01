@@ -7,4 +7,5 @@
 	<string name="left">GoLeft</string>
 	<string name="up">GoUp</string>
 	<string name="right">Go</string>
+	<string name="full_energy">1000</string>
 </resources>

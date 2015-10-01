@@ -51,7 +51,18 @@
               android:layout_toEndOf="@+id/btnUp"
               android:contentDescription="@string/right"
               android:src="@drawable/rightarrow" />
-        
+
+          <TextView
+              android:id="@+id/energyBar"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignParentRight="true"
+              android:layout_below="@+id/btnRestart"
+              android:ems="5"
+              android:text="@string/full_energy"
+              android:textColor="#00FF00" 
+              tools:context=".DisplayMessageActivity"/>
+
     </RelativeLayout>
 
 </FrameLayout>

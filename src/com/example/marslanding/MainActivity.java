@@ -9,11 +9,15 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 
 public class MainActivity extends Activity implements OnClickListener {
     private GameLoop gameLoop;
     private ImageButton leftBtn, upBtn, rightBtn, restartBtn;
+    private TextView energyBar;
+    private int fullEnergy = 1000, sideEnergy = 100, mainEnergy = 150 ;
+    
 
 	/**
 	 * @author John Casey 11/04/2014, modified by Alice Zhu 21/10/2015
@@ -47,6 +51,8 @@ public class MainActivity extends Activity implements OnClickListener {
 		//set up up button
 		upBtn = (ImageButton)findViewById(R.id.btnUp);
 		upBtn.setOnClickListener(this);
+		
+		energyBar = (TextView)findViewById(R.id.energyBar);
     }
 		
 
@@ -55,19 +61,49 @@ public class MainActivity extends Activity implements OnClickListener {
 		public void onClick(View view) {
 			// TODO Auto-generated method stub
 			if(view.getId() == R.id.btnRestart){	
+				gameLoop.gameover = false;
+				fullEnergy = 1000;
+				energyBar.setText("Energy: " + String.valueOf(fullEnergy));
 				gameLoop.reset();
-				gameLoop.invalidate();
+				gameLoop.invalidate();			
 			}
 
 			if(view.getId() == R.id.btnLeft){
 				gameLoop.left();
+				
 			}
 			if(view.getId() == R.id.btnUp){
 				gameLoop.up();
+				
 			}
 			if(view.getId() == R.id.btnRight){
 				gameLoop.right();
+				
 			} 
+			energyCaculation(view);
+		}
+		
+
+		/**
+		 *Fuel caculation
+		 */
+		public void energyCaculation(View view){
+			if(view.getId() == R.id.btnLeft || view.getId() == R.id.btnRight){
+				fullEnergy = fullEnergy - sideEnergy;
+			}
+			else if (view.getId() == R.id.btnUp){
+				fullEnergy = fullEnergy - mainEnergy;
+			}
+			if(fullEnergy <= 0)
+			{
+				gameLoop.gameover = true;
+				energyBar.setText("Oops!!! "
+						+ "Out of Energu!!!");
+			}
+			else
+			{
+				energyBar.setText("Energy: " + String.valueOf(fullEnergy));
+			}
 		}
 		
 
